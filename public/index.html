@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Reserva Médica</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      max-width: 1100px;
+      margin: 18px auto;
+      padding: 16px;
+      background: linear-gradient(180deg,#f4f9ff,#ffffff);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    @media(min-width:800px){
+      .grid { grid-template-columns: 1fr 1fr; }
+    }
+    form {
+      margin-bottom: 0;
+      padding: 16px;
+      border: 1px solid #e8f1ff;
+      border-radius: 10px;
+    }
+    label { 
+      display: block; 
+      margin: 6px 0 2px;
+    }
+    input, select {
+      padding: 10px 12px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #dbeeff;
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+    button { 
+      margin-top: 8px; 
+      padding: 10px 14px;
+      cursor: pointer;
+      background: #0b69ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+    }
+    .appointments { 
+      margin-top: 20px; 
+    }
+    .appt {
+      border: 1px solid #e9f3ff;
+      background: linear-gradient(180deg,#ffffff,#fbfdff);
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 18px rgba(6,24,86,0.04);
+    }
+    #regMsg, #bookMsg {
+      margin-top: 8px;
+      color: #b10000;
+      font-weight: 600;
+      min-height: 20px;
+    }
+    h1 { color: #0b69ff }
+  </style>
+</head>
+
+<body>
+  <h1>Reserva Médica — Demo</h1>
+
+  <div class="grid">
+    <section id="register">
+      <h2>Registrar paciente</h2>
+
+      <form id="frmRegister">
+      <label>Nombre</label>
+      <input id="pname" />
+
+      <label>Email</label>
+      <input id="pemail" />
+
+      <label>Teléfono</label>
+      <input id="pphone" />
+
+      <button type="submit">Registrar</button>
+      <div id="regMsg"></div>
+    </form>
+    </form>
+    </section>
+
+
+    <section id="book">
+      <h2>Agendar cita</h2>
+
+      <form id="frmBook">
+      <label>Paciente (ID)</label>
+      <input id="patientId" placeholder="Escribe el id devuelto al registrar" />
+
+      <label>Doctor</label>
+      <select id="doctorSelect">
+
+        <option value="1">Dr. Juan Perez</option>
+        <option value="2">Dra. Ana Gomez</option>
+        <option value="3">Dr. Luis Torres</option>
+      </select>
+
+      <label>Fecha</label>
+      <input type="date" id="dateInput" />
+
+      <label>Hora</label>
+      <input type="time" id="timeInput" />
+
+    
+      <label>Fecha y hora (ISO)</label>
+      <input id="startIso" placeholder="2025-12-06T09:00:00" />
+
+      <label>Duración (min)</label>
+      <input id="duration" value="60" />
+
+        <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+          <button type="submit">Agendar</button>
+          <div id="bookMsg"></div>
+        </div>
+      </form>
+    </section>
+  </div>
+
+
+  <section class="appointments">
+    <h2>Citas agendadas</h2>
+
+    <div id="appts"></div>
+    <button id="refresh">Refrescar</button>
+  </section>
+
+  <script src="/app.js"></script>
+</body>
+</html>
