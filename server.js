@@ -82,7 +82,7 @@ app.post('/api/appointments', (req, res) => {
     if (!doctor) return res.status(400).json({ error: 'Doctor no encontrado' });
 
     const newStart = dayjs(start_iso);
-    const newEnd = newStart.add(duration_min, 'minute').toISOString();
+    const newEnd = newStart.add(Number(duration_min), 'minute');
 
     const dow = newStart.day(); 
     if (dow === 0 || dow === 6) {
@@ -103,7 +103,7 @@ app.post('/api/appointments', (req, res) => {
 
       for (const a of rows) {
         const aStart = dayjs(a.start_iso);
-        const aEnd = aStart.add(a.duration_min, 'minute');
+        const aEnd = aStart.add(Number(a.duration_min), 'minute');
 
         if (aStart.isBefore(newEnd) && aEnd.isAfter(newStart)) {
           return res.status(409).json({ error: 'Horario ya ocupado' });
@@ -193,7 +193,7 @@ app.get('/api/available', (req, res) => {
     return res.status(400).json({ error: 'Fecha inválida' });
 
   const newStart = dayjs(start_iso);
-  const newEnd = newStart.add(Number(duration_min), 'minute').toISOString();
+  const newEnd = newStart.add(Number(duration_min), 'minute');
   const did = Number(doctor_id);
 
   db.all(
@@ -204,7 +204,7 @@ app.get('/api/available', (req, res) => {
 
       for (const a of rows) {
         const aStart = dayjs(a.start_iso);
-        const aEnd = aStart.add(a.duration_min, 'minute');
+        const aEnd = aStart.add(Number(a.duration_min), 'minute');
 
         if (aStart.isBefore(newEnd) && aEnd.isAfter(newStart)) {
           return res.json({ available: false });
