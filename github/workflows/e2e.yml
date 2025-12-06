@@ -22,16 +22,14 @@ jobs:
     - name: Prepare Playwright
       run: npm run prepare
 
-    - name: Start server (background)
+    - name: Start server
       run: |
-        # start server with fresh DB
         RESET_DB=1 nohup npm start > server.log 2>&1 &
         n=0
-        # wait for port 3000
         until curl -sS localhost:3000/ > /dev/null; do
           n=$((n+1))
           if [ $n -gt 30 ]; then
-            echo "Server didn't start"
+            echo "Server failed to start"
             cat server.log
             exit 1
           fi
@@ -40,11 +38,10 @@ jobs:
       timeout-minutes: 2
 
     - name: Run Playwright tests
-      run: |
-        npx playwright test --reporter=list
+      run: npx playwright test --reporter=list
       env:
         TEST_BASE_URL: http://localhost:3000
 
-    - name: ✅ OK - All Tests Passed
-      if: ${{ success() }}
-      run: echo "✅ OK - All E2E tests passed successfully!"
+    - name: OK - All Tests Passed
+      if: success()
+      run: echo "OK"
