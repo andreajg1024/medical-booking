@@ -45,6 +45,12 @@ jobs:
       env:
         TEST_BASE_URL: http://localhost:3000
 
-    - name: Print OK if tests passed
+    - name: ✅ SUCCESS - All E2E Tests Passed (OK)
       if: ${{ success() }}
-      run: echo "OK"
+      run: echo "✅ All tests passed successfully!"
+
+    - name: ❌ FAILURE - Tests did not pass
+      if: ${{ failure() }}
+      run: |
+        echo "❌ Some tests failed"
+        exit 1
