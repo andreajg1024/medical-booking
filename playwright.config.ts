@@ -12,7 +12,7 @@ export default defineConfig({
     command: 'node server.js',
     port: 3000,
     timeout: 30_000,
-    reuseExistingServer: true,
+    reuseExistingServer: false,
     env: { RESET_DB: '1' }
   }
 });

@@ -22,21 +22,6 @@ jobs:
     - name: Prepare Playwright
       run: npm run prepare
 
-    - name: Start server
-      run: |
-        RESET_DB=1 nohup npm start > server.log 2>&1 &
-        n=0
-        until curl -sS localhost:3000/ > /dev/null; do
-          n=$((n+1))
-          if [ $n -gt 30 ]; then
-            echo "Server failed to start"
-            cat server.log
-            exit 1
-          fi
-          sleep 1
-        done
-      timeout-minutes: 2
-
     - name: Run Playwright tests
       run: npx playwright test --reporter=list
       env:
