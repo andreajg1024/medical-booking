@@ -1,0 +1,47 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install deps
+      run: npm ci
+
+    - name: Prepare Playwright
+      run: npm run prepare
+
+    - name: Start server
+      run: |
+        RESET_DB=1 nohup npm start > server.log 2>&1 &
+        n=0
+        until curl -sS localhost:3000/ > /dev/null; do
+          n=$((n+1))
+          if [ $n -gt 30 ]; then
+            echo "Server failed to start"
+            cat server.log
+            exit 1
+          fi
+          sleep 1
+        done
+      timeout-minutes: 2
+
+    - name: Run Playwright tests
+      run: npx playwright test --reporter=list
+      env:
+        TEST_BASE_URL: http://localhost:3000
+
+    - name: OK - All Tests Passed
+      if: success()
+      run: echo "OK"
